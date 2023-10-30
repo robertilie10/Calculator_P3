@@ -1,0 +1,180 @@
+﻿@model IEnumerable<Calculator_P3.Models.Calculator>
+@{
+    ViewData["Title"] = "Calculator";   
+    Layout = "";
+}
+
+<style>
+
+    html{
+        
+    }
+
+    .container{
+        height:100%;
+        width:100%;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+    .calculator{
+        border: 2px black solid;
+        width: 50%;
+        height: 75%;
+    }
+    table{
+        height: 80%;
+        width: 100%;
+        background-color: black;
+    }
+    td{
+        width:25%;
+    }
+    /* tr{
+        height: 20%;
+        width: 100%;
+        border: 2px black solid;
+    } */
+    .display{
+        height: 100%;
+        width: 75%;
+    }
+    #display{
+        height: 100%;
+        width: 100%;
+        position: relative;
+        font-size: 1rem;
+        background-color: black;
+        color: white;
+        border: none;
+    }
+
+    display:focus{
+        outline:none;
+    }
+
+    .clear{
+        width: 25%;
+        height: 100%;
+        font-size: 1rem;
+        border: none;
+    }
+
+    #clear{
+        width:100%;
+        height:100%;
+        background-color: #dbdbdb;
+        font-size: 2rem;
+    }
+
+    #clear:hover{
+            background-color: #f0efed;
+    }
+
+    .button{
+        height: 100%;
+        width: 100%;
+        font-size: 1rem;
+        border: none;
+    }
+
+    .nr:hover{
+            background-color: #e6a14e;
+    }
+
+    .op:hover{
+        background-color:#999896;
+    }
+
+    .nr{
+        background-color: #e88813;
+        border: none;
+    }
+
+    .op{
+        background-color: #73716e;
+        border: none;
+    }
+
+    .top-container{
+        position: relative;
+        height: 20%;
+        width: 100%;
+        align-items: center;
+        display: flex;
+    }
+
+</style>
+
+<div class="container">
+    <div class="calculator">
+        <div class="top-container">
+            <div class="display">
+                <input type="text" id="display">
+            </div>
+            <div class="clear">
+                <button id="clear" value="c">C</button>
+            </div>
+        </div>
+            <table>
+                <tr>
+                    <td>
+                        <input type="button" value="7" class="button nr">
+                    </td>
+                    <td>                       
+                        <input type="button" value="8" class="button nr">
+                    </td>
+                    <td>                       
+                        <input type="button" value="9" class="button nr">
+                    </td>
+                    <td>                        
+                        <input type="button" value="*" class="button op">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" value="4" class="button nr">
+                    </td>
+                    <td>
+                        <input type="button" value="5" class="button nr">
+                    </td>
+                    <td>
+                        <input type="button" value="6" class="button nr">
+                    <td>
+                        <input type="button" value="/" class="button op">
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" value="1" class="button nr">
+                    </td>
+                    <td>
+                        <input type="button" value="2" class="button nr">
+                    </td>
+                    <td>
+                        <input type="button" value="3" class="button nr">
+                    </td>
+                    <td>
+                        <input type="button" value="-" class="button op">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="button" value="0" class="button nr">
+                    </td>
+                    <td>
+                        <input type="button" value="." class="button nr">
+                    </td>
+                    <td>
+                        <input type="button" value="=" class="button op">
+                    </td>
+                    <td>
+                        <input type="button" value="+" class="button op">
+                    </td>
+                </tr>
+            </table>
+    </div>
+</div>
+
