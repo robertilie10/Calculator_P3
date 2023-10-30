@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Calculator_P3.Models.Calculator>
+@model IEnumerable<Calculator_P3.Models.Calculator>
 @{
     ViewData["Title"] = "Calculator";   
     Layout = "";
@@ -44,7 +44,8 @@
         height: 100%;
         width: 100%;
         position: relative;
-        font-size: 1rem;
+        font-size: 2.7rem;
+        padding: 2%;
         background-color: black;
         color: white;
         border: none;
@@ -111,70 +112,82 @@
     <div class="calculator">
         <div class="top-container">
             <div class="display">
-                <input type="text" id="display">
+                <input type="text" id="display" readonly>
             </div>
             <div class="clear">
-                <button id="clear" value="c">C</button>
+                <button id="clear" value="c" onclick="clearDisplay()">C</button>
             </div>
         </div>
             <table>
                 <tr>
                     <td>
-                        <input type="button" value="7" class="button nr">
+                    <input type="button" value="7" class="button nr" onclick="appendToDisplay('7')">
                     </td>
-                    <td>                       
-                        <input type="button" value="8" class="button nr">
+                    <td>
+                    <input type="button" value="8" class="button nr" onclick="appendToDisplay('8')">
                     </td>
-                    <td>                       
-                        <input type="button" value="9" class="button nr">
+                    <td>
+                    <input type="button" value="9" class="button nr" onclick="appendToDisplay('9')">
                     </td>
-                    <td>                        
-                        <input type="button" value="*" class="button op">
+                    <td>
+                    <input type="button" value="*" class="button op" onclick="appendToDisplay('*')">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input type="button" value="4" class="button nr">
+                    <input type="button" value="4" class="button nr" onclick="appendToDisplay('4')">
                     </td>
                     <td>
-                        <input type="button" value="5" class="button nr">
+                    <input type="button" value="5" class="button nr" onclick="appendToDisplay('5')">
                     </td>
                     <td>
-                        <input type="button" value="6" class="button nr">
+                    <input type="button" value="6" class="button nr" onclick="appendToDisplay('6')">
                     <td>
-                        <input type="button" value="/" class="button op">
+                    <input type="button" value="/" class="button op" onclick="appendToDisplay('/')">
                     </td>
                     
                 </tr>
                 <tr>
                     <td>
-                        <input type="button" value="1" class="button nr">
+                    <input type="button" value="1" class="button nr" onclick="appendToDisplay('1')">
                     </td>
                     <td>
-                        <input type="button" value="2" class="button nr">
+                    <input type="button" value="2" class="button nr" onclick="appendToDisplay('2')">
                     </td>
                     <td>
-                        <input type="button" value="3" class="button nr">
+                    <input type="button" value="3" class="button nr" onclick="appendToDisplay('3')">
                     </td>
                     <td>
-                        <input type="button" value="-" class="button op">
+                    <input type="button" value="-" class="button op" onclick="appendToDisplay('-')">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input type="button" value="0" class="button nr">
+                    <input type="button" value="0" class="button nr" onclick="appendToDisplay('0')">
                     </td>
                     <td>
-                        <input type="button" value="." class="button nr">
+                    <input type="button" value="." class="button nr" onclick="appendToDisplay('.')">
                     </td>
                     <td>
-                        <input type="button" value="=" class="button op">
+                    <input type="button" value="=" class="button op" onclick="appendToDisplay('=')">
                     </td>
                     <td>
-                        <input type="button" value="+" class="button op">
+                    <input type="button" value="+" class="button op" onclick="appendToDisplay('+')">
                     </td>
                 </tr>
             </table>
     </div>
 </div>
+
+<script>
+    function appendToDisplay(value) {
+        const display = document.getElementById('display');
+        display.value += value;
+    }
+
+    function clearDisplay() {
+        const display = document.getElementById('display');
+        display.value = '';
+    }
+</script>
 
