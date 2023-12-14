@@ -6,8 +6,8 @@
 
 <style>
 
-    html{
-        
+    body{
+        background-color: lightseagreen;
     }
 
     .container{
@@ -32,12 +32,7 @@
     }
     td{
         width:25%;
-    }
-    /* tr{
-        height: 20%;
-        width: 100%;
-        border: 2px black solid;
-    } */
+    } 
     .display{
         height: 100%;
         width: 75%;
@@ -51,6 +46,8 @@
         background-color: black;
         color: white;
         border: none;
+        user-select: none; 
+        cursor: default; 
     }
 
     display:focus{
@@ -107,7 +104,25 @@
         align-items: center;
         display: flex;
     }
+    .download{
+        background-color:white;
+        color:black;
+        position: absolute;
+        bottom: 3%;
+        height: 10%;
+        width: 20%;
+        border: solid 5px green;
+        border-radius: 20px;
+        font-size: 200%;
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        text-decoration: none;
+    }
 
+    .download:hover {
+            background-color: #c6f7cc;
+    }
 </style>
 
 <div class="container">
@@ -182,6 +197,7 @@
                 </tr>
             </table>
     </div>
+    <a asp-action="Download" class="download"><p>Download</p></a>
 </div>
 
 <script>
@@ -191,7 +207,7 @@
         const lastChar = display.value.charAt(display.value.length - 1);
         if (display.value == '' || lastChar == '*' || lastChar == '-' 
         || lastChar == '+' || lastChar == '/' || lastChar == '.') {
-            if (value == '*' || value == '-' || value == '+' || value == '/' || value == '.') {
+            if (value == '*' || value == '+' || value == '/' || value == '.') {
                 display.value = display.value;
                 displayValueField.value = display.value;
             }
@@ -220,10 +236,10 @@
         const display = document.getElementById('display');
 
         try {
-            const result = eval(displayValueField.value); // Evaluare expresie
+            const result = eval(displayValueField.value); 
             if (isNaN(result)) {
                 updateResultDisplay('Calcul invalid');
-            } else {                
+            } else {
                 const roundedResult = parseFloat(result.toFixed(5));
                 updateResultDisplay(roundedResult);
             }
