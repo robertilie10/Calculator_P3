@@ -1,4 +1,4 @@
-@model IEnumerable<Calculator_P3.Models.Calculator>
+@model Calculator_P3.Models.Calculator
 @{
     ViewData["Title"] = "Calculator";   
     Layout = "";
@@ -22,6 +22,8 @@
         border: 2px black solid;
         width: 50%;
         height: 75%;
+        position: absolute;
+        top: 8%;
     }
     table{
         height: 80%;
@@ -168,9 +170,12 @@
                     <td>
                     <input type="button" value="." class="button nr" onclick="appendToDisplay('.')">
                     </td>
-                    <td>
-                    <input type="button" value="=" class="button op" onclick="appendToDisplay('=')">
-                    </td>
+                <form asp-action="Create">
+                        <td>
+                        <input type="hidden" name="displayValue" id="displayValue">
+                    <input asp-for="Calcul" type="submit" value="=" class="button op" onclick="calculateAndDisplayResult()">
+                        </td>
+                    </form>
                     <td>
                     <input type="button" value="+" class="button op" onclick="appendToDisplay('+')">
                     </td>
@@ -182,12 +187,59 @@
 <script>
     function appendToDisplay(value) {
         const display = document.getElementById('display');
-        display.value += value;
+        const displayValueField = document.getElementById('displayValue');
+        const lastChar = display.value.charAt(display.value.length - 1);
+        if (display.value == '' || lastChar == '*' || lastChar == '-' 
+        || lastChar == '+' || lastChar == '/' || lastChar == '.') {
+            if (value == '*' || value == '-' || value == '+' || value == '/' || value == '.') {
+                display.value = display.value;
+                displayValueField.value = display.value;
+            }
+            else {
+               display.value += value;
+               displayValueField.value = display.value;
+            }
+        }
+            else
+            {
+                display.value += value;
+                displayValueField.value = display.value;
+            }
+        
     }
 
     function clearDisplay() {
         const display = document.getElementById('display');
+        const displayValueField = document.getElementById('displayValue');
         display.value = '';
+        displayValueField.value = '';
+    }
+
+    function calculateAndDisplayResult() {
+        const displayValueField = document.getElementById('displayValue');
+        const display = document.getElementById('display');
+
+        try {
+            const result = eval(displayValueField.value); // Evaluare expresie
+            if (isNaN(result)) {
+                updateResultDisplay('Calcul invalid');
+            } else {                
+                const roundedResult = parseFloat(result.toFixed(5));
+                updateResultDisplay(roundedResult);
+            }
+        } catch (error) {
+            updateResultDisplay('Calcul invalid');
+        }
+    }
+
+    function updateResultDisplay(value) {
+        const display = document.getElementById('display');
+        display.textContent = value;
+    }
+
+    function updateResultDisplay(result) {
+        const display = document.getElementById('display');
+        display.value = result;
     }
 </script>
 
