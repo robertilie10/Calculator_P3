@@ -10,6 +10,8 @@ using Calculator_P3.Models;
 using System.Data;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics.Contracts;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace Calculator_P3.Controllers
 {
@@ -83,21 +85,86 @@ namespace Calculator_P3.Controllers
 
             return double.Parse((string)row["expression"]);
         }
-
-        // GET: Calculators/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+      
+        public ActionResult Download()
         {
-            if (id == null || _context.Calculators == null)
-            {
-                return NotFound();
-            }
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-            var calculator = await _context.Calculators.FindAsync(id);
-            if (calculator == null)
-            {
-                return NotFound();
+            var package = new ExcelPackage();
+            var worksheet = package.Workbook.Worksheets.Add("Calculations");
+            var calcule = _context.Calculators.OrderBy(c => c.Data).ToList();
+
+            worksheet.Cells["E1:H1"].Merge = true;
+            worksheet.Cells["E2:E3"].Merge = true;
+            worksheet.Cells["F2:F3"].Merge = true;
+            worksheet.Cells["G2:G3"].Merge = true;
+            worksheet.Cells["H2:H3"].Merge = true;
+            var mergedCell = worksheet.Cells["E1:H1"];
+            mergedCell.Value = "Calculations";
+            mergedCell.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+            mergedCell.Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+            var fill = mergedCell.Style.Fill;
+            fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(242, 152, 48)); // Orange
+            mergedCell.Style.Font.Size = 24;
+
+            int j = 3;
+            for (int i = 0; i < calcule.Count + 1; i++)
+            { 
+                if (i == 0)
+                {
+                    worksheet.Column(5).Width = 40;
+                    worksheet.Column(6).Width = 20;
+                    worksheet.Column(7).Width = 20;
+                    worksheet.Column(8).Width = 20;
+                    worksheet.Cells["E2:E3"].Value = "ID";
+                    worksheet.Cells["F2:F3"].Value = "Calculation";
+                    worksheet.Cells["G2:G3"].Value = "Result";
+                    worksheet.Cells["H2:H3"].Value = "Date";
+                    for (int colIndex = 5; colIndex <= 8; colIndex++)
+                    {
+                        var comb = worksheet.Cells[2, colIndex, 3, colIndex]; 
+                        comb.Merge = true;
+                        comb.Style.Font.Bold = true;
+                        comb.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                        comb.Style.VerticalAlignment = OfficeOpenXml.Style.ExcelVerticalAlignment.Center;
+                        comb.Style.Font.Size = 14;
+
+                        var fill1 = comb.Style.Fill;
+                        fill1.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        fill1.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(255, 235, 156)); // Gold 
+
+                    }
+                }
+                else
+                {
+                    worksheet.Cells["E" + (j + 1)].Value = calcule[i - 1].ID;
+                    worksheet.Cells["F" + (j + 1)].Value = calcule[i - 1].Calcul;
+                    worksheet.Cells["G" + (j + 1)].Value = calcule[i - 1].Rezultat;
+                    worksheet.Cells["H" + (j + 1)].Value = calcule[i - 1].Data;
+                    worksheet.Cells["H" + (j + 1)].Style.Numberformat.Format = "yyyy-mm-dd hh:mm:ss";
+
+                    j++;
+
+                    for (int colIndex = 5; colIndex <= 8; colIndex++)
+                    {
+                        var valori = worksheet.Cells[j, colIndex];
+                        valori.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                        var fill2 = valori.Style.Fill;
+                        fill2.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        fill2.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(75, 222, 78)); // Green 
+
+                    }
+                }
             }
-            return View(calculator);
-        }         
+            var stream = new MemoryStream(package.GetAsByteArray());
+
+            return new FileStreamResult(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            {
+                FileDownloadName = "Calculations.xlsx"
+            };
+
+        }
     }
 }
